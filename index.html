@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ADITYA HARDWARE - Sample Shop</title>
+<style>
+  body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f4f4f4; }
+  header { background:#007bff; color:white; padding:15px; text-align:center; }
+  h1 { margin:0; }
+  #container { padding:15px; max-width:800px; margin:auto; }
+  input, button { padding:7px; margin:5px 0; border-radius:4px; border:1px solid #ccc; width:100%; }
+  button { background:#007bff; color:white; border:none; cursor:pointer; }
+  button:hover { background:#0056b3; }
+  .material { border:1px solid #ccc; padding:10px; margin:10px 0; display:flex; align-items:center; border-radius:5px; background:#fff; }
+  .material img { width:60px; height:60px; margin-right:15px; object-fit:cover; border-radius:5px; }
+  .material-info { display:flex; flex-direction:column; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>ADITYA HARDWARE</h1>
+</header>
+
+<div id="container">
+
+  <h3>Add Material</h3>
+  <input type="text" id="materialName" placeholder="Material Name">
+  <input type="number" id="materialPrice" placeholder="Selling Price (₹)">
+  <input type="text" id="materialImage" placeholder="Image URL">
+  <button onclick="addMaterial()">Add Material</button>
+
+  <h3>Search Material</h3>
+  <input type="text" id="searchInput" placeholder="Search by name..." onkeyup="searchMaterial()">
+
+  <h3>Material List</h3>
+  <div id="materialList"></div>
+
+</div>
+
+<script>
+let materials = [];
+
+// Add Material
+function addMaterial(){
+  let name = document.getElementById('materialName').value.trim();
+  let price = parseInt(document.getElementById('materialPrice').value);
+  let image = document.getElementById('materialImage').value.trim();
+  if(!name  !price  !image){ alert("Fill all fields"); return; }
+  materials.push({name, price, image});
+  document.getElementById('materialName').value='';
+  document.getElementById('materialPrice').value='';
+  document.getElementById('materialImage').value='';
+  displayMaterials(materials);
+}
+
+// Display Materials
+function displayMaterials(list){
+  let container = document.getElementById('materialList');
+  container.innerHTML = '';
+  list.forEach(m=>{
+    let div = document.createElement('div');
+    div.className='material';
+    div.innerHTML=
+      <img src="${m.image}" alt="${m.name}">
+      <div class="material-info">
+        <strong>${m.name}</strong>
+        <span>Price: ₹${m.price}</span>
+        <span>Category / Info line 3</span>
+      </div>
+    ;
+    container.appendChild(div);
+  });
+}
+
+// Search Material
+function searchMaterial(){
+  let term = document.getElementById('searchInput').value.toLowerCase();
+  let filtered = materials.filter(m=>m.name.toLowerCase().includes(term));
+  displayMaterials(filtered);
+}
+</script>
+
+</body>
+</html>
